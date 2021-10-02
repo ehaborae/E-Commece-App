@@ -4,6 +4,7 @@ import 'package:e_commerce/layouts/shop_app/cubit/cubit.dart';
 import 'package:e_commerce/layouts/shop_app/cubit/states.dart';
 import 'package:e_commerce/models/shop_app/categories_model.dart';
 import 'package:e_commerce/models/shop_app/home_model.dart';
+import 'package:e_commerce/shared/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,20 +14,28 @@ class ProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ShopCubit, ShopStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is ShopSuccessChangeFavoritesDataState){
+          showToast(message: state.changeFavoritesModel.message, toastStates: ToastStates.SUCCESS);
+        }else if(state is ShopSuccessChangeFavoritesDataState){
+          showToast(message: state.changeFavoritesModel.message, toastStates: ToastStates.ERROR);
+        }
+      },
       builder: (context, state) {
         var cubit = ShopCubit.get(context);
         return BuildCondition(
           // ignore: unnecessary_null_comparison
           condition: cubit.homeModel != null && cubit.categoriesModel != null,
-          builder: (context) => productsBuilder(cubit.homeModel,cubit.categoriesModel, context),
+          builder: (context) =>
+              productsBuilder(cubit.homeModel, cubit.categoriesModel, context),
           fallback: (context) => Center(child: CircularProgressIndicator()),
         );
       },
     );
   }
 
-  Widget productsBuilder(HomeModel? homeModel,CategoriesModel? categoriesModel, context) =>
+  Widget productsBuilder(
+          HomeModel? homeModel, CategoriesModel? categoriesModel, context) =>
       SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
@@ -72,14 +81,15 @@ class ProductsScreen extends StatelessWidget {
                   Container(
                     height: 100.0,
                     child: ListView.separated(
-                      physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) => buildCategoriesItem(categoriesModel!.date!.data[index]),
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) => buildCategoriesItem(
+                            categoriesModel!.date!.data[index]),
                         separatorBuilder: (context, index) => Container(
-                          width: 3.0,
-                          height: 100,
-                          color: Colors.white,
-                        ),
+                              width: 3.0,
+                              height: 100,
+                              color: Colors.white,
+                            ),
                         itemCount: categoriesModel!.date!.data.length),
                   ),
                   Text(
@@ -191,10 +201,17 @@ class ProductsScreen extends StatelessWidget {
                         ),
                       Spacer(),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          ShopCubit.get(context).changeFavorites(productModel.id);
+                        },
                         icon: Icon(
-                          Icons.favorite_outline,
-                          color: Colors.grey,
+                          ShopCubit.get(context).favorites[productModel.id]!
+                              ? Icons.favorite
+                              : Icons.favorite_border_outlined,
+                          color:
+                              ShopCubit.get(context).favorites[productModel.id]!
+                                  ? Colors.blue
+                                  : Colors.grey,
                           size: 20,
                         ),
                       ),
@@ -211,8 +228,7 @@ class ProductsScreen extends StatelessWidget {
         alignment: AlignmentDirectional.bottomCenter,
         children: [
           Image(
-            image: NetworkImage(
-                '${data.image}'),
+            image: NetworkImage('${data.image}'),
             width: 100.0,
             height: 100.0,
             fit: BoxFit.cover,

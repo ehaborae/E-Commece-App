@@ -29,9 +29,10 @@ void main() async {
 
   if (onBoarding != false) {
     // ignore: unnecessary_null_comparison
-    if (token != null)
+    if (token != null) {
       widget = ShopLayout();
-    else
+      print(token);
+    } else
       widget = LoginScreen();
   } else
     widget = OnBoardingScreen();
@@ -50,7 +51,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => ShopCubit()..getHomeData()..getCategoriesData(),
+      create: (BuildContext context) => ShopCubit()
+        ..getHomeData()
+        ..getCategoriesData(),
       child: BlocConsumer<ShopCubit, ShopStates>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -66,7 +69,9 @@ class MyApp extends StatelessWidget {
                 unselectedItemColor: Colors.grey,
               ),
               appBarTheme: AppBarTheme(
-                iconTheme: IconThemeData(color: Colors.blue,),
+                iconTheme: IconThemeData(
+                  color: Colors.blue,
+                ),
                 backgroundColor: Colors.white,
                 elevation: 0,
               ),
