@@ -2,6 +2,7 @@ import 'package:buildcondition/buildcondition.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/layouts/shop_app/cubit/cubit.dart';
 import 'package:e_commerce/layouts/shop_app/cubit/states.dart';
+import 'package:e_commerce/models/shop_app/categories_model.dart';
 import 'package:e_commerce/models/shop_app/home_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,18 +18,19 @@ class ProductsScreen extends StatelessWidget {
         var cubit = ShopCubit.get(context);
         return BuildCondition(
           // ignore: unnecessary_null_comparison
-          condition: cubit.homeModel != null,
-          builder: (context) => productsBuilder(cubit.homeModel, context),
+          condition: cubit.homeModel != null && cubit.categoriesModel != null,
+          builder: (context) => productsBuilder(cubit.homeModel,cubit.categoriesModel, context),
           fallback: (context) => Center(child: CircularProgressIndicator()),
         );
       },
     );
   }
 
-  Widget productsBuilder(HomeModel? homeModel, context) =>
+  Widget productsBuilder(HomeModel? homeModel,CategoriesModel? categoriesModel, context) =>
       SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CarouselSlider(
               items: homeModel!.data!.banners
@@ -41,7 +43,7 @@ class ProductsScreen extends StatelessWidget {
                   )
                   .toList(),
               options: CarouselOptions(
-                height: MediaQuery.of(context).size.height / 5,
+                height: MediaQuery.of(context).size.height / 6.5,
                 initialPage: 0,
                 viewportFraction: .85,
                 enableInfiniteScroll: true,
@@ -51,6 +53,42 @@ class ProductsScreen extends StatelessWidget {
                 autoPlayAnimationDuration: Duration(seconds: 2),
                 autoPlayCurve: Curves.fastLinearToSlowEaseIn,
                 scrollDirection: Axis.horizontal,
+              ),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Categories',
+                    style: TextStyle(
+                      fontSize: 24.0,
+                    ),
+                  ),
+                  Container(
+                    height: 100.0,
+                    child: ListView.separated(
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) => buildCategoriesItem(categoriesModel!.date!.data[index]),
+                        separatorBuilder: (context, index) => Container(
+                          width: 3.0,
+                          height: 100,
+                          color: Colors.white,
+                        ),
+                        itemCount: categoriesModel!.date!.data.length),
+                  ),
+                  Text(
+                    'Products',
+                    style: TextStyle(
+                      fontSize: 24.0,
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(
@@ -94,7 +132,7 @@ class ProductsScreen extends StatelessWidget {
                 if (productModel.discount != 0)
                   Container(
                     width: double.infinity,
-                    color: Colors.red,
+                    color: Colors.red.withOpacity(.8),
                     child: Text(
                       'DISCOUNT',
                       style: TextStyle(fontSize: 16.0, color: Colors.white),
@@ -167,5 +205,31 @@ class ProductsScreen extends StatelessWidget {
             ),
           ],
         ),
+      );
+
+  Widget buildCategoriesItem(Data data) => Stack(
+        alignment: AlignmentDirectional.bottomCenter,
+        children: [
+          Image(
+            image: NetworkImage(
+                '${data.image}'),
+            width: 100.0,
+            height: 100.0,
+            fit: BoxFit.cover,
+          ),
+          Container(
+            width: 100.0,
+            color: Colors.black.withOpacity(.7),
+            child: Text(
+              '${data.name}',
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
       );
 }

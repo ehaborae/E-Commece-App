@@ -13,3 +13,11 @@ class ShopErrorHomeDataState extends ShopStates {
 
   ShopErrorHomeDataState(this.error);
 }
+
+class ShopSuccessCategoriesDataState extends ShopStates {}
+
+class ShopErrorCategoriesDataState extends ShopStates {
+  final String error;
+
+  ShopErrorCategoriesDataState(this.error);
+}
