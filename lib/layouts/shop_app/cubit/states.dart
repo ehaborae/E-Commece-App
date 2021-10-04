@@ -38,3 +38,13 @@ class ShopErrorChangeFavoritesDataState extends ShopStates {
 
   ShopErrorChangeFavoritesDataState(this.error, this.changeFavoritesModel);
 }
+
+class ShopSuccessGetFavoritesDataState extends ShopStates {}
+
+class ShopLoadingGetFavoritesDataState extends ShopStates {}
+
+class ShopErrorGetFavoritesDataState extends ShopStates {
+  final String error;
+
+  ShopErrorGetFavoritesDataState(this.error);
+}

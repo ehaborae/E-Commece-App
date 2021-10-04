@@ -1,6 +1,7 @@
 import 'package:e_commerce/layouts/shop_app/cubit/states.dart';
 import 'package:e_commerce/models/shop_app/categories_model.dart';
 import 'package:e_commerce/models/shop_app/change_favorites_model.dart';
+import 'package:e_commerce/models/shop_app/get_favorites.dart';
 import 'package:e_commerce/models/shop_app/home_model.dart';
 import 'package:e_commerce/modules/shop_app/categories/categories_screen.dart';
 import 'package:e_commerce/modules/shop_app/favorites/favorites_screen.dart';
@@ -49,7 +50,7 @@ class ShopCubit extends Cubit<ShopStates> {
         });
       });
 
-      print(favorites.toString());
+      // print(favorites.toString());
       emit(ShopSuccessHomeDataState());
     }).catchError((error) {
       print(error.toString());
@@ -65,7 +66,7 @@ class ShopCubit extends Cubit<ShopStates> {
     emit(ShopLoadingHomeDataState());
     DioHelper.getData(url: GET_CATEGORIES, token: token).then((value) {
       categoriesModel = CategoriesModel.fromJson(value.data);
-      print(categoriesModel!.date!.data[1].name);
+      // print(categoriesModel!.date!.data[1].name);
       emit(ShopSuccessCategoriesDataState());
     }).catchError((error) {
       print(error.toString());
@@ -91,11 +92,30 @@ class ShopCubit extends Cubit<ShopStates> {
       print(value.data);
       if (!changeFavoritesModel!.status) {
         favorites[productId] = !favorites[productId]!;
+      } else {
+        getFavoritesData();
       }
       emit(ShopSuccessChangeFavoritesDataState(changeFavoritesModel!));
     }).catchError((error) {
       favorites[productId] = !favorites[productId]!;
       emit(ShopErrorChangeFavoritesDataState(error, changeFavoritesModel!));
+    });
+  }
+
+  // ----------------------------------------get Favorites
+
+  ShopFavoritesModel? favoritesModel;
+
+  void getFavoritesData() {
+    emit(ShopLoadingGetFavoritesDataState());
+    DioHelper.getData(url: FAVORITES, token: token).then((value) {
+      favoritesModel = ShopFavoritesModel.fromJson(value.data);
+
+      // printFullText(value.data.toString());
+      emit(ShopSuccessGetFavoritesDataState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ShopErrorGetFavoritesDataState(error.toString()));
     });
   }
 }

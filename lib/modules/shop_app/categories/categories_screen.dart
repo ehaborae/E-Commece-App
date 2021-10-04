@@ -13,6 +13,7 @@ class CategoriesScreen extends StatelessWidget {
       listener: (context, sate) {},
       builder: (context, sate) {
         return ListView.separated(
+          physics: BouncingScrollPhysics(),
             itemBuilder: (context, index) => buildCatItem(
                 ShopCubit.get(context).categoriesModel!.date!.data[index]),
             separatorBuilder: (context, index) => Container(
