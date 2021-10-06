@@ -48,3 +48,12 @@ class ShopErrorGetFavoritesDataState extends ShopStates {
 
   ShopErrorGetFavoritesDataState(this.error);
 }
+class ShopSuccessGetUserDataState extends ShopStates {}
+
+class ShopLoadingGetUsersDataState extends ShopStates {}
+
+class ShopErrorGetUserDataState extends ShopStates {
+  final String error;
+
+  ShopErrorGetUserDataState(this.error);
+}
