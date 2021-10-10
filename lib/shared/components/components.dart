@@ -2,23 +2,22 @@ import 'package:e_commerce/layouts/shop_app/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-void navigateTo(BuildContext context, widget) => Navigator.push(
+void navigateTo(BuildContext context, widget) =>
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => widget,
       ),
     );
 
-void navigateAndFinish(
-  context,
-  widget,
-) =>
+void navigateAndFinish(context,
+    widget,) =>
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
         builder: (context) => widget,
       ),
-      (route) {
+          (route) {
         return false;
       },
     );
@@ -51,11 +50,11 @@ Widget defaultFormField({
         ),
         suffixIcon: suffix != null
             ? IconButton(
-                onPressed: suffixPressed,
-                icon: Icon(
-                  suffix,
-                ),
-              )
+          onPressed: suffixPressed,
+          icon: Icon(
+            suffix,
+          ),
+        )
             : null,
         border: OutlineInputBorder(),
       ),
@@ -131,7 +130,8 @@ Color choseToastColor(ToastStates toastStates) {
   return color;
 }
 
-Widget buildListProducts(model, context, {required bool isSearch}) => Padding(
+Widget buildListProducts(model, context, {required bool isSearch}) =>
+    Padding(
       padding: const EdgeInsets.all(20.0),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -215,19 +215,24 @@ Widget buildListProducts(model, context, {required bool isSearch}) => Padding(
                         ],
                       ),
                     Spacer(),
-                    // if (!isSearch)
+                    if (!isSearch)
                       IconButton(
-                        onPressed: () {
-                          ShopCubit.get(context).changeFavorites(model.id);
-                        },
-                        icon: Icon(
-                          ShopCubit.get(context).favorites[model.id]!
-                              ? Icons.favorite
-                              : Icons.favorite_border_outlined,
-                          color: model.inFavorites ? Colors.blue : Colors.grey,
-                          size: 20,
-                        ),
+                      onPressed: () {
+                        ShopCubit.get(context).changeFavorites(model.id);
+
+                      },
+                      icon: Icon(
+                        ShopCubit
+                            .get(context)
+                            .favorites[model.id]!
+                            ? Icons.favorite
+                            : Icons.favorite_border_outlined,
+                        color: ShopCubit
+                            .get(context)
+                            .favorites[model.id]! ? Colors.blue : Colors.grey,
+                        size: 20,
                       ),
+                    ),
                   ],
                 ),
               ],
