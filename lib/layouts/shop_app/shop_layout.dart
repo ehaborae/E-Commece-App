@@ -15,7 +15,8 @@ class ShopLayout extends StatelessWidget {
         int index = cubit.currentIndex;
         return Scaffold(
           appBar: AppBar(
-            title: Text('Salla'),
+            centerTitle: true,
+            title: Text('Salla',style: TextStyle(color: Colors.black),),
             actions: [
               IconButton(
                 onPressed: () {
