@@ -215,7 +215,7 @@ Widget buildListProducts(model, context, {required bool isSearch}) => Padding(
                         ],
                       ),
                     Spacer(),
-                    if (!isSearch)
+                    // if (!isSearch)
                       IconButton(
                         onPressed: () {
                           ShopCubit.get(context).changeFavorites(model.id);
@@ -224,7 +224,7 @@ Widget buildListProducts(model, context, {required bool isSearch}) => Padding(
                           ShopCubit.get(context).favorites[model.id]!
                               ? Icons.favorite
                               : Icons.favorite_border_outlined,
-                          color: model.inFaorites ? Colors.blue : Colors.grey,
+                          color: model.inFavorites ? Colors.blue : Colors.grey,
                           size: 20,
                         ),
                       ),
