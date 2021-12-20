@@ -1,47 +1,23 @@
 import 'package:buildcondition/buildcondition.dart';
-import 'package:e_commerce/layouts/shop_app/cubit/cubit.dart';
-import 'package:e_commerce/layouts/shop_app/cubit/states.dart';
-import 'package:e_commerce/layouts/shop_app/shop_layout.dart';
-import 'package:e_commerce/modules/shop_app/register/register_screen.dart';
+import 'package:e_commerce/modules/social_app/social_login_screen/cubit/cubit.dart';
 import 'package:e_commerce/shared/components/components.dart';
-import 'package:e_commerce/shared/components/constants.dart';
-import 'package:e_commerce/shared/network/local/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'cubit/states.dart';
+
 // ignore: must_be_immutable
-class LoginScreen extends StatelessWidget {
+class SocialLoginScreen extends StatelessWidget {
+  var formKey = GlobalKey<FormState>();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
-  var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => ShopCubit(),
-      child: BlocConsumer<ShopCubit, ShopStates>(
-        listener: (context, state) {
-          if (state is LoginSuccessState) {
-            if (state.loginModel.status) {
-              print(state.loginModel.message);
-              print(state.loginModel.data!.token);
-              showToast(
-                  message: state.loginModel.message,
-                  toastStates: ToastStates.SUCCESS);
-              CacheHelper.saveData(
-                      key: 'token', value: state.loginModel.data!.token)
-                  .then((value) {
-                token = state.loginModel.data!.token;
-                ShopCubit.get(context).currentIndex = 0 ;
-                navigateAndFinish(context, ShopLayout());
-              });
-            } else {
-              showToast(
-                  message: state.loginModel.message,
-                  toastStates: ToastStates.ERROR);
-            }
-          }
-        },
+      create: (BuildContext context) => SocialLoginCubit(),
+      child: BlocConsumer<SocialLoginCubit, SocialLoginStates>(
+        listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(),
@@ -85,11 +61,13 @@ class LoginScreen extends StatelessWidget {
                           height: 15.0,
                         ),
                         defaultFormField(
-                            isPassword: ShopCubit.get(context).isPassword,
+                            isPassword:
+                                SocialLoginCubit.get(context).isPassword,
                             suffixPressed: () {
-                              ShopCubit.get(context).changePasswordVisibility();
+                              SocialLoginCubit.get(context)
+                                  .changePasswordVisibility();
                             },
-                            suffix: ShopCubit.get(context).suffix,
+                            suffix: SocialLoginCubit.get(context).suffix,
                             controller: passwordController,
                             label: 'Password',
                             prefix: Icons.lock_outline,
@@ -103,15 +81,15 @@ class LoginScreen extends StatelessWidget {
                           height: 30.0,
                         ),
                         BuildCondition(
-                          condition: state is! LoginLoadingState,
+                          condition: state is! SocialLoginLoadingState,
                           builder: (context) => defaultButton(
                             function: () {
-                              if (formKey.currentState!.validate()) {
-                                ShopCubit.get(context).userLogin(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                );
-                              }
+                              // if (formKey.currentState!.validate()) {
+                              //   SocialLoginCubit.get(context).userLogin(
+                              //     email: emailController.text,
+                              //     password: passwordController.text,
+                              //   );
+                              // }
                             },
                             text: 'login',
                             isUpperCase: true,
@@ -131,7 +109,7 @@ class LoginScreen extends StatelessWidget {
                             defaultTextButton(
                               text: 'register now',
                               onPressed: () {
-                                navigateTo(context, RegisterScreen());
+                                // navigateTo(context, RegisterScreen());
                               },
                             ),
                           ],

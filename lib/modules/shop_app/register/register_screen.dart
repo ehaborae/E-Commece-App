@@ -1,13 +1,12 @@
 import 'package:buildcondition/buildcondition.dart';
+import 'package:e_commerce/layouts/shop_app/cubit/cubit.dart';
+import 'package:e_commerce/layouts/shop_app/cubit/states.dart';
 import 'package:e_commerce/layouts/shop_app/shop_layout.dart';
-import 'package:e_commerce/modules/shop_app/register/cubit/states.dart';
 import 'package:e_commerce/shared/components/components.dart';
 import 'package:e_commerce/shared/components/constants.dart';
 import 'package:e_commerce/shared/network/local/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'cubit/cubit.dart';
 
 // ignore: must_be_immutable
 class RegisterScreen extends StatelessWidget {
@@ -20,9 +19,9 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => RegisterCubit(),
-      child: BlocConsumer<RegisterCubit, RegisterStates>(
-        listener: (context, state){
+      create: (BuildContext context) => ShopCubit(),
+      child: BlocConsumer<ShopCubit, ShopStates>(
+        listener: (context, state) {
           if (state is RegisterSuccessState) {
             if (state.registerModel.status) {
               print(state.registerModel.message);
@@ -31,7 +30,7 @@ class RegisterScreen extends StatelessWidget {
                   message: state.registerModel.message,
                   toastStates: ToastStates.SUCCESS);
               CacheHelper.saveData(
-                  key: 'token', value: state.registerModel.data!.token)
+                      key: 'token', value: state.registerModel.data!.token)
                   .then((value) {
                 token = state.registerModel.data!.token;
                 navigateAndFinish(context, ShopLayout());
@@ -43,7 +42,7 @@ class RegisterScreen extends StatelessWidget {
             }
           }
         },
-        builder: (context, state){
+        builder: (context, state) {
           return Scaffold(
             appBar: AppBar(),
             body: Center(
@@ -57,15 +56,17 @@ class RegisterScreen extends StatelessWidget {
                       children: [
                         Text(
                           'REGISTER',
-                          style: Theme.of(context).textTheme.headline4!.copyWith(
-                            color: Colors.black,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.headline4!.copyWith(
+                                    color: Colors.black,
+                                  ),
                         ),
                         Text(
                           'Register now to browse our hot offers',
-                          style: Theme.of(context).textTheme.headline6!.copyWith(
-                            color: Colors.grey,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.headline6!.copyWith(
+                                    color: Colors.grey,
+                                  ),
                         ),
                         SizedBox(
                           height: 30.0,
@@ -110,12 +111,13 @@ class RegisterScreen extends StatelessWidget {
                           height: 15.0,
                         ),
                         defaultFormField(
-                          isPassword: RegisterCubit.get(context).isPassword,
+                            isPassword:
+                                ShopCubit.get(context).isPasswordRegister,
                             suffixPressed: () {
-                              RegisterCubit.get(context)
-                                  .changePasswordVisibility();
+                              ShopCubit.get(context)
+                                  .registerChangePasswordVisibility();
                             },
-                            suffix: RegisterCubit.get(context).suffix,
+                            suffix: ShopCubit.get(context).suffixRegister,
                             controller: passwordController,
                             label: 'Password',
                             prefix: Icons.lock_outline,
@@ -133,7 +135,7 @@ class RegisterScreen extends StatelessWidget {
                           builder: (context) => defaultButton(
                             function: () {
                               if (formKey.currentState!.validate()) {
-                                RegisterCubit.get(context).userRegister(
+                                ShopCubit.get(context).userRegister(
                                   email: emailController.text,
                                   name: nameController.text,
                                   phone: phoneController.text,

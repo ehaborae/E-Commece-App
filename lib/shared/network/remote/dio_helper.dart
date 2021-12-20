@@ -12,26 +12,26 @@ class DioHelper {
     );
   }
 
-  static Future<Response> postData({
-    required Map<String, dynamic> data,
-    Map<String, dynamic>? query,
-    required String url,
-    String lang = 'en',
-    String? token,
-  }) async {
-    return dio.post(
-      url,
-      data: data,
-      queryParameters: query,
-      options: Options(
-        headers: {
-          'lang': lang,
-          'Content-Type': 'application/json',
-          'Authorization': token ?? '',
-        },
-      ),
-    );
-  }
+    static Future<Response> postData({
+      required Map<String, dynamic> data,
+      Map<String, dynamic>? query,
+      required String url,
+      String lang = 'en',
+      String? token,
+    }) async {
+      return dio.post(
+        url,
+        data: data,
+        queryParameters: query,
+        options: Options(
+          headers: {
+            'lang': lang,
+            'Content-Type': 'application/json',
+            'Authorization': token ?? '',
+          },
+        ),
+      );
+    }
 
   static Future<Response> getData({
     required String url,

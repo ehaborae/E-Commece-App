@@ -8,11 +8,26 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // ignore: must_be_immutable
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
   var formKey = GlobalKey<FormState>();
+
   var nameController = TextEditingController();
+
   var emailController = TextEditingController();
+
   var phoneController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ShopCubit.get(context).getProfileData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +40,18 @@ class SettingsScreen extends StatelessWidget {
         phoneController.text = model.data!.phone;
 
         return BuildCondition(
-          condition: state is! ShopLoadingGetUsersDataState,
-          builder: (context) =>Padding(
+          condition: ShopCubit.get(context).userModel != null,
+          builder: (context) => Padding(
             padding: const EdgeInsets.all(20.0),
             child: Form(
               key: formKey,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    'Edit Profile',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
                   if (state is ShopLoadingUpdateUsersDataState)
                     LinearProgressIndicator(),
                   SizedBox(
@@ -57,6 +77,11 @@ class SettingsScreen extends StatelessWidget {
                     label: 'Email Address',
                     prefix: Icons.email,
                     type: TextInputType.emailAddress,
+                    onChanged: (String value) {
+                      if (!emailController.text.contains('@gmail.com')) {
+                        emailController.text = value + '@gmail.com';
+                      }
+                    },
                     validate: (String? value) {
                       if (value!.isEmpty) {
                         return 'Email must not be empty';

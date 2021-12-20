@@ -1,6 +1,37 @@
 import 'package:e_commerce/models/shop_app/change_favorites_model.dart';
+import 'package:e_commerce/models/shop_app/login_model.dart';
 
 abstract class ShopStates {}
+class LoginLoadingState extends ShopStates {}
+
+class LoginSuccessState extends ShopStates {
+  final LoginModel loginModel;
+
+  LoginSuccessState(this.loginModel);
+}
+
+class LoginErrorState extends ShopStates {
+  final String error;
+
+  LoginErrorState(this.error);
+}
+
+class LoginChangePasswordVisibilityState extends ShopStates {}
+class RegisterLoadingState extends ShopStates {}
+
+class RegisterSuccessState extends ShopStates {
+  final LoginModel registerModel;
+
+  RegisterSuccessState(this.registerModel);
+}
+
+class RegisterErrorState extends ShopStates {
+  final String error;
+
+  RegisterErrorState(this.error);
+}
+
+class RegisterChangePasswordVisibilityState extends ShopStates {}
 
 class ShopInitialState extends ShopStates {}
 
@@ -67,3 +98,17 @@ class ShopErrorUpdateUserDataState extends ShopStates {
 
   ShopErrorUpdateUserDataState(this.error);
 }
+
+
+
+class ShopLoadingProductDetailsState extends ShopStates {}
+
+class ShopSuccessProductDetailsState extends ShopStates {}
+
+class ShopErrorProductDetailsState extends ShopStates {
+  final String error;
+
+  ShopErrorProductDetailsState(this.error);
+}
+
+class ShowMoreState extends ShopStates {}

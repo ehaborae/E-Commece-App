@@ -4,6 +4,7 @@ import 'package:e_commerce/layouts/shop_app/cubit/cubit.dart';
 import 'package:e_commerce/layouts/shop_app/cubit/states.dart';
 import 'package:e_commerce/models/shop_app/categories_model.dart';
 import 'package:e_commerce/models/shop_app/home_model.dart';
+import 'package:e_commerce/modules/shop_app/product_details/product_details.dart';
 import 'package:e_commerce/shared/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,10 +16,14 @@ class ProductsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<ShopCubit, ShopStates>(
       listener: (context, state) {
-        if(state is ShopSuccessChangeFavoritesDataState){
-          showToast(message: state.changeFavoritesModel.message, toastStates: ToastStates.SUCCESS);
-        }else if(state is ShopSuccessChangeFavoritesDataState){
-          showToast(message: state.changeFavoritesModel.message, toastStates: ToastStates.ERROR);
+        if (state is ShopSuccessChangeFavoritesDataState) {
+          showToast(
+              message: state.changeFavoritesModel.message,
+              toastStates: ToastStates.SUCCESS);
+        } else if (state is ShopSuccessChangeFavoritesDataState) {
+          showToast(
+              message: state.changeFavoritesModel.message,
+              toastStates: ToastStates.ERROR);
         }
       },
       builder: (context, state) {
@@ -115,8 +120,10 @@ class ProductsScreen extends StatelessWidget {
                 crossAxisCount: 2,
                 children: List.generate(
                   homeModel.data!.products.length,
-                  (index) => buildGridProduct(
-                      homeModel.data!.products[index], context),
+                  (index) => SizedBox(
+                    child: buildGridProduct(
+                        homeModel.data!.products[index], context),
+                  ),
                 ),
               ),
             ),
@@ -126,101 +133,112 @@ class ProductsScreen extends StatelessWidget {
 
   Widget buildGridProduct(ProductModel productModel, context) => Container(
         color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              alignment: AlignmentDirectional.bottomCenter,
-              children: [
-                Image(
-                  image: NetworkImage(
-                    '${productModel.image}',
-                  ),
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height / 4,
-                ),
-                if (productModel.discount != 0)
-                  Container(
-                    width: double.infinity,
-                    color: Colors.red.withOpacity(.8),
-                    child: Text(
-                      'DISCOUNT',
-                      style: TextStyle(fontSize: 16.0, color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: InkWell(
+          onTap: () {
+            navigateTo(
+              context,
+              ProductDetails(
+                productId: productModel.id,
+              ),
+            );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                alignment: AlignmentDirectional.bottomCenter,
                 children: [
-                  Text(
-                    '${productModel.name}',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      height: 1.3,
+                  Image(
+                    image: NetworkImage(
+                      '${productModel.image}',
                     ),
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height / 4,
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        '${productModel.price}',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 14.0, color: Colors.blue),
+                  if (productModel.discount != 0)
+                    Container(
+                      width: double.infinity,
+                      color: Colors.red.withOpacity(.8),
+                      child: Text(
+                        'DISCOUNT',
+                        style: TextStyle(fontSize: 16.0, color: Colors.white),
+                        textAlign: TextAlign.center,
                       ),
-                      if (productModel.discount != 0)
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 5.0,
-                            ),
-                            Container(
-                              height: 1.0,
-                              width: 2.0,
-                              color: Colors.blue,
-                            ),
-                            SizedBox(
-                              width: 5.0,
-                            ),
-                            Text(
-                              '${productModel.oldPrice}',
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.grey,
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                            ),
-                          ],
-                        ),
-                      Spacer(),
-                      IconButton(
-                        onPressed: () {
-                          ShopCubit.get(context).changeFavorites(productModel.id);
-                        },
-                        icon: Icon(
-                          ShopCubit.get(context).favorites[productModel.id]!
-                              ? Icons.favorite
-                              : Icons.favorite_border_outlined,
-                          color:
-                              ShopCubit.get(context).favorites[productModel.id]!
-                                  ? Colors.blue
-                                  : Colors.grey,
-                          size: 20,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
                 ],
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${productModel.name}',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        height: 1.3,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '${productModel.price} EGP',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 14.0, color: Colors.blue),
+                        ),
+                        if (productModel.discount != 0)
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 5.0,
+                              ),
+                              Container(
+                                height: 1.0,
+                                width: 2.0,
+                                color: Colors.blue,
+                              ),
+                              SizedBox(
+                                width: 5.0,
+                              ),
+                              Text(
+                                '${productModel.oldPrice} EGP',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  color: Colors.grey,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                            ],
+                          ),
+                        Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            ShopCubit.get(context)
+                                .changeFavorites(productModel.id);
+                          },
+                          icon: Icon(
+                            ShopCubit.get(context).favorites[productModel.id]!
+                                ? Icons.favorite
+                                : Icons.favorite_border_outlined,
+                            color: ShopCubit.get(context)
+                                    .favorites[productModel.id]!
+                                ? Colors.blue
+                                : Colors.grey,
+                            size: 20,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       );
 

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "734911025929",
+    "project_id": "fire-social-3eaa0",
+    "storage_bucket": "fire-social-3eaa0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734911025929:android:50f505669400475306f9d8",
+        "android_client_info": {
+          "package_name": "com.example.e_commerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "734911025929-11q9m4mjke5ekm9g2dgc0ovri1oobr5s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.e_commerce",
+            "certificate_hash": "61169292eb8fc555b41ef5e11735808d4dbc7b12"
+          }
+        },
+        {
+          "client_id": "734911025929-kslg2lnlah705q7uo2jiakqje9shbcp1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZkslVF74g-xl6hGiKjp-6Uf-SxqlcUVk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "734911025929-kslg2lnlah705q7uo2jiakqje9shbcp1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
