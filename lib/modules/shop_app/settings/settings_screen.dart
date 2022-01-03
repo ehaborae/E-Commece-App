@@ -1,6 +1,7 @@
 import 'package:buildcondition/buildcondition.dart';
 import 'package:e_commerce/layouts/shop_app/cubit/cubit.dart';
 import 'package:e_commerce/layouts/shop_app/cubit/states.dart';
+import 'package:e_commerce/modules/shop_app/admin_login/login_screen.dart';
 import 'package:e_commerce/shared/components/components.dart';
 import 'package:e_commerce/shared/components/constants.dart';
 import 'package:flutter/material.dart';
@@ -108,6 +109,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     height: 20.0,
                   ),
                   defaultButton(
+                    context: context,
                     function: () {
                       if (formKey.currentState!.validate()) {
                         ShopCubit.get(context).updateProfileData(
@@ -123,10 +125,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     height: 20.0,
                   ),
                   defaultButton(
+                    context: context,
                     function: () {
                       signOut(context);
                     },
                     text: 'logout',
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Admin Login",
+                      ),
+                      defaultTextButton(
+                        text: 'admin',
+                        onPressed: () {
+                          navigateTo(context, AdminLoginScreen());
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),

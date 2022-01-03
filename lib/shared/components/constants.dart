@@ -19,3 +19,18 @@ void printFullText(String text)
   pattern.allMatches(text).forEach((match) => print(match.group(0)));
 }
 String? token;
+String? address;
+String? paymentMethod;
+bool? isInProgress;
+
+List<String> addresses = [
+  '14, Ahmed Orabi, Zagazig, Sharkia',
+  '15, Ahmed Orabi, Zagazig, Sharkia',
+  '16, Ahmed Orabi, Zagazig, Sharkia',
+  '17, Ahmed Orabi, Zagazig, Sharkia',
+];
+
+List<String> paymentMethodList = [
+  'VISA',
+  'Cash on delivery',
+];

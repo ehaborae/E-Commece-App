@@ -2,6 +2,7 @@ import 'package:buildcondition/buildcondition.dart';
 import 'package:e_commerce/layouts/shop_app/cubit/cubit.dart';
 import 'package:e_commerce/layouts/shop_app/cubit/states.dart';
 import 'package:e_commerce/layouts/shop_app/shop_layout.dart';
+import 'package:e_commerce/modules/shop_app/admin_login/login_screen.dart';
 import 'package:e_commerce/modules/shop_app/register/register_screen.dart';
 import 'package:e_commerce/shared/components/components.dart';
 import 'package:e_commerce/shared/components/constants.dart';
@@ -105,6 +106,7 @@ class LoginScreen extends StatelessWidget {
                         BuildCondition(
                           condition: state is! LoginLoadingState,
                           builder: (context) => defaultButton(
+                            context: context,
                             function: () {
                               if (formKey.currentState!.validate()) {
                                 ShopCubit.get(context).userLogin(
@@ -136,6 +138,7 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ],
                         ),
+
                       ],
                     ),
                   ),

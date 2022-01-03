@@ -83,6 +83,7 @@ class SocialLoginScreen extends StatelessWidget {
                         BuildCondition(
                           condition: state is! SocialLoginLoadingState,
                           builder: (context) => defaultButton(
+                            context: context,
                             function: () {
                               // if (formKey.currentState!.validate()) {
                               //   SocialLoginCubit.get(context).userLogin(

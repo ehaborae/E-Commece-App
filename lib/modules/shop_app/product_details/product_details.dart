@@ -91,6 +91,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ),
                         Spacer(),
                         Container(
+                          height: 45.0,
                           padding: EdgeInsets.symmetric(
                             vertical: 8.0,
                             horizontal: 15.0,
@@ -110,17 +111,25 @@ class _ProductDetailsState extends State<ProductDetails> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                if (!ShopCubit.get(context).favorites[ShopCubit.get(context).productDetailsModel!.data!.id]!)
+                                if (!ShopCubit.get(context).favorites[
+                                    ShopCubit.get(context)
+                                        .productDetailsModel!
+                                        .data!
+                                        .id]!)
                                   Text(
                                     'Add to',
                                     style:
-                                        Theme.of(context).textTheme.headline6,
+                                        Theme.of(context).textTheme.subtitle1,
                                   ),
-                                if (ShopCubit.get(context).favorites[ShopCubit.get(context).productDetailsModel!.data!.id]!)
+                                if (ShopCubit.get(context).favorites[
+                                    ShopCubit.get(context)
+                                        .productDetailsModel!
+                                        .data!
+                                        .id]!)
                                   Text(
                                     'Remove from',
                                     style:
-                                    Theme.of(context).textTheme.headline6,
+                                        Theme.of(context).textTheme.subtitle1,
                                   ),
                                 SizedBox(
                                   width: 20.0,
@@ -148,6 +157,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 8.0,),
+                    cartButton(
+                        context: context,
+                        productId: ShopCubit.get(context)
+                            .productDetailsModel!
+                            .data!
+                            .id),
                     Divider(),
                     Container(
                       padding: EdgeInsets.symmetric(

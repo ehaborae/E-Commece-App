@@ -27,6 +27,19 @@ void main() async {
       ? null
       : CacheHelper.getData(key: 'token');
 
+  address = CacheHelper.getData(key: 'address') == null
+      ? null
+      : CacheHelper.getData(key: 'address');
+
+  paymentMethod = CacheHelper.getData(key: 'paymentMethod') == null
+      ? null
+      : CacheHelper.getData(key: 'paymentMethod');
+
+  // isInProgress = CacheHelper.getData(key: 'isInProgress') == null
+  //     ? null
+  //     : CacheHelper.getData(key: 'isInProgress');
+  isInProgress = false;
+
   if (onBoarding != false) {
     // ignore: unnecessary_null_comparison
     if (token != null) {
@@ -55,13 +68,15 @@ class MyApp extends StatelessWidget {
         ..getHomeData()
         ..getFavoritesData()
         ..getCategoriesData()
+        ..getCartData()
+        // ..changeCart(53)
         ..getProfileData(),
 
       child: BlocConsumer<ShopCubit, ShopStates>(
         listener: (context, state) {},
         builder: (context, state) {
           return MaterialApp(
-            title: 'E Commerce',
+            title: 'Shop',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               bottomNavigationBarTheme: BottomNavigationBarThemeData(

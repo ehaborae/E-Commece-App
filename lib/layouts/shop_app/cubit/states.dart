@@ -1,3 +1,4 @@
+import 'package:e_commerce/models/shop_app/change_cart_model.dart';
 import 'package:e_commerce/models/shop_app/change_favorites_model.dart';
 import 'package:e_commerce/models/shop_app/login_model.dart';
 
@@ -112,3 +113,45 @@ class ShopErrorProductDetailsState extends ShopStates {
 }
 
 class ShowMoreState extends ShopStates {}
+
+
+class ShopLoadingCatDetailsState extends ShopStates {}
+
+class ShopSuccessCatDetailsState extends ShopStates {}
+
+class ShopErrorCatDetailsState extends ShopStates {
+  final String error;
+
+  ShopErrorCatDetailsState(this.error);
+}
+
+class ShopSuccessGetCartDataState extends ShopStates {}
+
+class ShopLoadingGetCartDataState extends ShopStates {}
+
+class ShopErrorGetCartDataState extends ShopStates {
+  final String error;
+
+  ShopErrorGetCartDataState(this.error);
+}
+
+
+class ShopSuccessChangeCartDataState extends ShopStates {
+  final ChangeCartModel changeCartModel;
+
+  ShopSuccessChangeCartDataState(this.changeCartModel);
+}
+
+class ShopSuccessChangeCartTestDataState extends ShopStates {}
+class ShopLoadingChangeCartTestDataState extends ShopStates {}
+
+class ShopErrorChangeCartDataState extends ShopStates {
+  final String error;
+  final ChangeCartModel changeCartModel;
+
+  ShopErrorChangeCartDataState(this.error, this.changeCartModel);
+}
+
+class ChangeShippingAddressIndex extends ShopStates {}
+
+class ChangePaymentMethodIndex extends ShopStates {}

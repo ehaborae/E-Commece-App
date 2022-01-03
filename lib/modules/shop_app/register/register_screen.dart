@@ -133,6 +133,7 @@ class RegisterScreen extends StatelessWidget {
                         BuildCondition(
                           condition: state is! RegisterLoadingState,
                           builder: (context) => defaultButton(
+                            context: context,
                             function: () {
                               if (formKey.currentState!.validate()) {
                                 ShopCubit.get(context).userRegister(

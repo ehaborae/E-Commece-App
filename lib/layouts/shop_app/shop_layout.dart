@@ -16,14 +16,19 @@ class ShopLayout extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text('Salla',style: TextStyle(color: Colors.black),),
+            title: Text('Shop',style: TextStyle(color: Colors.black),),
             actions: [
               IconButton(
                 onPressed: () {
-                  navigateTo(context, SearchScreen());
+                  if(cubit.currentIndex == 2){
+                    cubit.clearCart();
+                  }else{
+                    navigateTo(context, SearchScreen());
+                  }
+
                 },
                 icon: Icon(
-                  Icons.search_outlined,
+                  cubit.currentIndex == 2 ? Icons.delete_outline_rounded : Icons.search_outlined,
                 ),
               ),
             ],
@@ -58,6 +63,16 @@ class ShopLayout extends StatelessWidget {
               BottomNavigationBarItem(
                 icon: index == 2
                     ? Icon(
+                        Icons.shopping_cart,
+                      )
+                    : Icon(
+                        Icons.shopping_cart_outlined,
+                      ),
+                label: 'Cart',
+              ),
+              BottomNavigationBarItem(
+                icon: index == 3
+                    ? Icon(
                         Icons.favorite,
                       )
                     : Icon(
@@ -66,7 +81,7 @@ class ShopLayout extends StatelessWidget {
                 label: 'Favorites',
               ),
               BottomNavigationBarItem(
-                icon: index == 3
+                icon: index == 4
                     ? Icon(
                         Icons.settings,
                       )

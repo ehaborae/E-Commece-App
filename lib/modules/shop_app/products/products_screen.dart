@@ -4,6 +4,7 @@ import 'package:e_commerce/layouts/shop_app/cubit/cubit.dart';
 import 'package:e_commerce/layouts/shop_app/cubit/states.dart';
 import 'package:e_commerce/models/shop_app/categories_model.dart';
 import 'package:e_commerce/models/shop_app/home_model.dart';
+import 'package:e_commerce/modules/shop_app/cat_details/cat_details_screen.dart';
 import 'package:e_commerce/modules/shop_app/product_details/product_details.dart';
 import 'package:e_commerce/shared/components/components.dart';
 import 'package:flutter/material.dart';
@@ -84,15 +85,15 @@ class ProductsScreen extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    height: 100.0,
+                    height: 110.0,
                     child: ListView.separated(
                         physics: BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) => buildCategoriesItem(
-                            categoriesModel!.date!.data[index]),
+                            categoriesModel!.date!.data[index], context),
                         separatorBuilder: (context, index) => Container(
-                              width: 3.0,
-                              height: 100,
+                              width: 8.0,
+                              height: 110,
                               color: Colors.white,
                             ),
                         itemCount: categoriesModel!.date!.data.length),
@@ -114,7 +115,7 @@ class ProductsScreen extends StatelessWidget {
               child: GridView.count(
                 mainAxisSpacing: 10.0,
                 crossAxisSpacing: 1.0,
-                childAspectRatio: 1 / 1.57,
+                childAspectRatio: 1 / 1.8,
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 crossAxisCount: 2,
@@ -153,7 +154,7 @@ class ProductsScreen extends StatelessWidget {
                       '${productModel.image}',
                     ),
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height / 4,
+                    height: MediaQuery.of(context).size.height / 4.3,
                   ),
                   if (productModel.discount != 0)
                     Container(
@@ -174,7 +175,7 @@ class ProductsScreen extends StatelessWidget {
                   children: [
                     Text(
                       '${productModel.name}',
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 14.0,
@@ -189,34 +190,37 @@ class ProductsScreen extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 14.0, color: Colors.blue),
                         ),
-                        if (productModel.discount != 0)
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              Container(
-                                height: 1.0,
-                                width: 2.0,
-                                color: Colors.blue,
-                              ),
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              Text(
-                                '${productModel.oldPrice} EGP',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 12.0,
-                                  color: Colors.grey,
-                                  decoration: TextDecoration.lineThrough,
-                                ),
-                              ),
-                            ],
-                          ),
+                        // if (productModel.discount != 0)
+                        //   Row(
+                        //     children: [
+                        //       SizedBox(
+                        //         width: 5.0,
+                        //       ),
+                        //       Container(
+                        //         height: 1.0,
+                        //         width: 2.0,
+                        //         color: Colors.blue,
+                        //       ),
+                        //       SizedBox(
+                        //         width: 5.0,
+                        //       ),
+                        //       Text(
+                        //         '${productModel.oldPrice} EGP',
+                        //         maxLines: 2,
+                        //         overflow: TextOverflow.ellipsis,
+                        //         style: TextStyle(
+                        //           fontSize: 12.0,
+                        //           color: Colors.grey,
+                        //           decoration: TextDecoration.lineThrough,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
                         Spacer(),
                         IconButton(
+                          padding: EdgeInsetsDirectional.only(
+                            end: 10.0,
+                          ),
                           onPressed: () {
                             ShopCubit.get(context)
                                 .changeFavorites(productModel.id);
@@ -234,6 +238,7 @@ class ProductsScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+                    cartButton(context: context, productId: productModel.id),
                   ],
                 ),
               ),
@@ -242,28 +247,44 @@ class ProductsScreen extends StatelessWidget {
         ),
       );
 
-  Widget buildCategoriesItem(Data data) => Stack(
-        alignment: AlignmentDirectional.bottomCenter,
-        children: [
-          Image(
-            image: NetworkImage('${data.image}'),
-            width: 100.0,
-            height: 100.0,
-            fit: BoxFit.cover,
-          ),
-          Container(
-            width: 100.0,
-            color: Colors.black.withOpacity(.7),
-            child: Text(
-              '${data.name}',
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.white,
+  Widget buildCategoriesItem(Data data, BuildContext context) => Card(
+        margin: EdgeInsets.zero,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: InkWell(
+          onTap: () {
+            navigateTo(
+                context,
+                CatDetails(
+                  catId: data.id,
+                  catName: '${data.name}',
+                ));
+          },
+          child: Stack(
+            alignment: AlignmentDirectional.bottomCenter,
+            children: [
+              Image(
+                image: NetworkImage('${data.image}'),
+                width: 100.0,
+                height: 100.0,
+                fit: BoxFit.cover,
               ),
-            ),
+              Container(
+                width: 100.0,
+                color: Colors.black.withOpacity(.7),
+                child: Text(
+                  '${data.name}',
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       );
+
+
 }
